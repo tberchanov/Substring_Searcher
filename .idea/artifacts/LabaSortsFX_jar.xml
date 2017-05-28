@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="LabaSortsFX:jar">
+    <output-path>$USER_HOME$/Desktop</output-path>
+    <root id="archive" name="LabaSortsFX.jar">
+      <element id="module-output" name="SubstringSearcher" />
+    </root>
+  </artifact>
+</component>

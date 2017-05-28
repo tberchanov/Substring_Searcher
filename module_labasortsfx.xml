@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_labasortsfx" default="compile.module.labasortsfx">
+  <dirname property="module.labasortsfx.basedir" file="${ant.file.module_labasortsfx}"/>
+  
+  <property name="module.jdk.home.labasortsfx" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.labasortsfx" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.labasortsfx" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.labasortsfx" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="labasortsfx.output.dir" value="${module.labasortsfx.basedir}/out/production/LabaSortsFX"/>
+  <property name="labasortsfx.testoutput.dir" value="${module.labasortsfx.basedir}/out/test/LabaSortsFX"/>
+  
+  <path id="labasortsfx.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="labasortsfx.module.production.classpath">
+    <path refid="${module.jdk.classpath.labasortsfx}"/>
+  </path>
+  
+  <path id="labasortsfx.runtime.production.module.classpath">
+    <pathelement location="${labasortsfx.output.dir}"/>
+  </path>
+  
+  <path id="labasortsfx.module.classpath">
+    <path refid="${module.jdk.classpath.labasortsfx}"/>
+    <pathelement location="${labasortsfx.output.dir}"/>
+  </path>
+  
+  <path id="labasortsfx.runtime.module.classpath">
+    <pathelement location="${labasortsfx.testoutput.dir}"/>
+    <pathelement location="${labasortsfx.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.labasortsfx">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.labasortsfx">
+    <patternset refid="excluded.from.module.labasortsfx"/>
+  </patternset>
+  
+  <path id="labasortsfx.module.sourcepath">
+    <dirset dir="${module.labasortsfx.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.labasortsfx" depends="compile.module.labasortsfx.production,compile.module.labasortsfx.tests" description="Compile module LabaSortsFX"/>
+  
+  <target name="compile.module.labasortsfx.production" depends="register.custom.compilers" description="Compile module LabaSortsFX; production classes">
+    <mkdir dir="${labasortsfx.output.dir}"/>
+    <javac2 destdir="${labasortsfx.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.labasortsfx}/javac">
+      <compilerarg line="${compiler.args.labasortsfx}"/>
+      <bootclasspath refid="labasortsfx.module.bootclasspath"/>
+      <classpath refid="labasortsfx.module.production.classpath"/>
+      <src refid="labasortsfx.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.labasortsfx"/>
+    </javac2>
+    
+    <copy todir="${labasortsfx.output.dir}">
+      <fileset dir="${module.labasortsfx.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.labasortsfx.tests" depends="register.custom.compilers,compile.module.labasortsfx.production" description="compile module LabaSortsFX; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.labasortsfx" description="cleanup module">
+    <delete dir="${labasortsfx.output.dir}"/>
+    <delete dir="${labasortsfx.testoutput.dir}"/>
+  </target>
+</project>
